@@ -9,7 +9,8 @@ public class Application  {
         try {
             new MainApiVerticle().init(args);
         } catch(Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Application Exception!");
+            ex.printStackTrace();
         }
 
     }
