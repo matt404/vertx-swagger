@@ -1,4 +1,4 @@
-package io.swagger.server.api.verticle;
+package ;
 
 import io.swagger.server.api.model.Order;
 

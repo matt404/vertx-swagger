@@ -24,9 +24,18 @@ public class User   {
   }
 
   public User (Long id, String username, String firstName, String lastName, String email, String password, String phone, Integer userStatus) {
-    this.id = id;    this.username = username;    this.firstName = firstName;    this.lastName = lastName;    this.email = email;    this.password = password;    this.phone = phone;    this.userStatus = userStatus;
+    
+    this.id = id;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.password = password;
+    this.phone = phone;
+    this.userStatus = userStatus;
   }
 
+  
     
   @JsonProperty("id")
   public Long getId() {
@@ -36,6 +45,7 @@ public class User   {
     this.id = id;
   }
 
+  
     
   @JsonProperty("username")
   public String getUsername() {
@@ -45,6 +55,7 @@ public class User   {
     this.username = username;
   }
 
+  
     
   @JsonProperty("firstName")
   public String getFirstName() {
@@ -54,6 +65,7 @@ public class User   {
     this.firstName = firstName;
   }
 
+  
     
   @JsonProperty("lastName")
   public String getLastName() {
@@ -63,6 +75,7 @@ public class User   {
     this.lastName = lastName;
   }
 
+  
     
   @JsonProperty("email")
   public String getEmail() {
@@ -72,6 +85,7 @@ public class User   {
     this.email = email;
   }
 
+  
     
   @JsonProperty("password")
   public String getPassword() {
@@ -81,6 +95,7 @@ public class User   {
     this.password = password;
   }
 
+  
     
   @JsonProperty("phone")
   public String getPhone() {
@@ -90,6 +105,7 @@ public class User   {
     this.phone = phone;
   }
 
+  
     
   @JsonProperty("userStatus")
   public Integer getUserStatus() {
@@ -99,6 +115,7 @@ public class User   {
     this.userStatus = userStatus;
   }
 
+  
 
   @Override
   public boolean equals(Object o) {

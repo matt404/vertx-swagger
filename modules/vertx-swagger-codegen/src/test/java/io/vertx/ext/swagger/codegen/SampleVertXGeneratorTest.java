@@ -16,9 +16,9 @@ public class SampleVertXGeneratorTest {
 		args[3] = "-i";
 		args[4] = "http://petstore.swagger.io/v2/swagger.json";
 		args[5] = "-o";
-		args[6] = "../../sample/petstore-vertx-server";
+		args[6] = "../../../petstore-vertx-server";
 		args[7] = "--group-id";
-        args[8] = "io.swagger"; 
+        args[8] = "io.swagger.petstore";
         args[9] = "--artifact-id";
         args[10] = "petstore-vertx-server";
 		SwaggerCodegen.main(args);

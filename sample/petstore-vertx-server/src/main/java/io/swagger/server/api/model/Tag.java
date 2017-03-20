@@ -18,9 +18,12 @@ public class Tag   {
   }
 
   public Tag (Long id, String name) {
-    this.id = id;    this.name = name;
+    
+    this.id = id;
+    this.name = name;
   }
 
+  
     
   @JsonProperty("id")
   public Long getId() {
@@ -30,6 +33,7 @@ public class Tag   {
     this.id = id;
   }
 
+  
     
   @JsonProperty("name")
   public String getName() {
@@ -39,6 +43,7 @@ public class Tag   {
     this.name = name;
   }
 
+  
 
   @Override
   public boolean equals(Object o) {

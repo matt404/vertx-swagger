@@ -28,6 +28,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
 
     protected String resourceFolder = "src/main/resources";
     protected String rootPackage = "io.swagger.server.api";
+    protected String interfacePackage, implPackage;
     protected String apiVersion = "1.0.0-SNAPSHOT";
 
     public static final String ROOT_PACKAGE = "rootPackage";
@@ -62,6 +63,8 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
         apiTemplateFiles.clear();
         apiTemplateFiles.put("api.mustache", // the template to use
                 ".java"); // the extension for each file to write
+        apiTemplateFiles.put("apiImpl.mustache", // the template to use
+                "Impl.java"); // the extension for each file to write
         apiTemplateFiles.put("apiVerticle.mustache", // the template to use
                 "Verticle.java"); // the extension for each file to write
 
@@ -82,7 +85,19 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
          */
         modelPackage = rootPackage + ".model";
 
+        /**
+         * Interface Package. Optional, if needed, this can be used in templates
+         */
+        interfacePackage = rootPackage + ".interface";
+
+        /**
+         * Impl Package. Optional, if needed, this can be used in templates
+         */
+        implPackage = rootPackage + ".impl";
+
         additionalProperties.put(ROOT_PACKAGE, rootPackage);
+        additionalProperties.put("interfacePackage", interfacePackage);
+        additionalProperties.put("implPackage", implPackage);
 
         groupId = "io.swagger";
         artifactId = "swagger-java-vertx-server";
@@ -117,7 +132,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
      * @return A string value for the help message
      */
     public String getHelp() {
-        return "Generates a java-Vert.X Server library.";
+        return "Generates a java-Vert.X Server application.";
     }
 
     @Override
@@ -137,6 +152,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
         supportingFiles.clear();
         supportingFiles.add(new SupportingFile("swagger.mustache", resourceFolder, "swagger.json"));
 
+        supportingFiles.add(new SupportingFile("Application.mustache", sourceFolder + File.separator + rootPackage.replace(".", File.separator), "Application.java"));
         supportingFiles.add(new SupportingFile("MainApiVerticle.mustache", sourceFolder + File.separator + rootPackage.replace(".", File.separator), "MainApiVerticle.java"));
 
         writeOptional(outputFolder, new SupportingFile("vertx-default-jul-logging.mustache", resourceFolder, "vertx-default-jul-logging.properties"));

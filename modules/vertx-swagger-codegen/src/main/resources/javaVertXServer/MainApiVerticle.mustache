@@ -17,7 +17,12 @@ public class MainApiVerticle extends AbstractVerticle {
     final static Logger LOGGER = LoggerFactory.getLogger(MainApiVerticle.class); 
     
     final Router router = Router.router(vertx);
-    
+
+    public void init(String args[]) throws Exception {
+        Future<Void> startFuture = Future.future();
+        this.start(startFuture);
+    }
+
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         

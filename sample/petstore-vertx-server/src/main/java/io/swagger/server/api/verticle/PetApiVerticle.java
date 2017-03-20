@@ -8,8 +8,8 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
 import io.swagger.server.api.model.Pet;
-import io.swagger.server.api.model.ModelApiResponse;
 import java.io.File;
+import io.swagger.server.api.model.ApiResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -37,13 +37,19 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(ADDPET_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Pet body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), Pet.class);
+                
                 
                 
                 //TODO: call implementation
                 
+                
+                
                 service.addPet(body);
                 message.reply(null);
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -55,15 +61,24 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(DELETEPET_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
+                
+                
+                
                 
                 String apiKey = Json.mapper.readValue(message.body().getJsonObject("apiKey").encode(), String.class);
                 
                 
+                
                 //TODO: call implementation
+                
+                
                 
                 service.deletePet(petId, apiKey);
                 message.reply(null);
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -75,14 +90,20 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(FINDPETSBYSTATUS_SERVICE_ID).handler(message -> {
             try {
                 
+                
                 List<String> status = Json.mapper.readValue(message.body().getJsonArray("status").encode(), 
                         Json.mapper.getTypeFactory().constructCollectionType(List.class, String.class));
                 
                 
+                
+                
                 //TODO: call implementation
+                
                 
                 List<Pet> result = service.findPetsByStatus(status);
                 message.reply(new JsonArray(Json.encode(result)).encodePrettily());
+                
+                
                 
                 
             } catch (Exception e) {
@@ -95,14 +116,20 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(FINDPETSBYTAGS_SERVICE_ID).handler(message -> {
             try {
                 
+                
                 List<String> tags = Json.mapper.readValue(message.body().getJsonArray("tags").encode(), 
                         Json.mapper.getTypeFactory().constructCollectionType(List.class, String.class));
                 
                 
+                
+                
                 //TODO: call implementation
+                
                 
                 List<Pet> result = service.findPetsByTags(tags);
                 message.reply(new JsonArray(Json.encode(result)).encodePrettily());
+                
+                
                 
                 
             } catch (Exception e) {
@@ -115,14 +142,20 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(GETPETBYID_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
+                
                 
                 
                 //TODO: call implementation
                 
+                
                 Pet result = service.getPetById(petId);
                 
                 message.reply(new JsonObject(Json.encode(result)).encodePrettily());
+                
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -134,13 +167,19 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(UPDATEPET_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Pet body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), Pet.class);
+                
                 
                 
                 //TODO: call implementation
                 
+                
+                
                 service.updatePet(body);
                 message.reply(null);
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -152,17 +191,29 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(UPDATEPETWITHFORM_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
                 
+                
+                
+                
                 String name = Json.mapper.readValue(message.body().getJsonObject("name").encode(), String.class);
+                
+                
+                
                 
                 String status = Json.mapper.readValue(message.body().getJsonObject("status").encode(), String.class);
                 
                 
+                
                 //TODO: call implementation
+                
+                
                 
                 service.updatePetWithForm(petId, name, status);
                 message.reply(null);
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -174,18 +225,30 @@ public class PetApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(UPLOADFILE_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
                 
+                
+                
+                
                 String additionalMetadata = Json.mapper.readValue(message.body().getJsonObject("additionalMetadata").encode(), String.class);
+                
+                
+                
                 
                 File file = Json.mapper.readValue(message.body().getJsonObject("file").encode(), File.class);
                 
                 
+                
                 //TODO: call implementation
                 
-                ModelApiResponse result = service.uploadFile(petId, additionalMetadata, file);
+                
+                ApiResponse result = service.uploadFile(petId, additionalMetadata, file);
                 
                 message.reply(new JsonObject(Json.encode(result)).encodePrettily());
+                
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)

@@ -19,9 +19,9 @@ public class Order   {
 
 
   public enum StatusEnum {
-    PLACED("placed"),
-    APPROVED("approved"),
-    DELIVERED("delivered");
+    PLACED(placed),
+    APPROVED(approved),
+    DELIVERED(delivered);
 
     private String value;
 
@@ -44,9 +44,16 @@ public class Order   {
   }
 
   public Order (Long id, Long petId, Integer quantity, Date shipDate, StatusEnum status, Boolean complete) {
-    this.id = id;    this.petId = petId;    this.quantity = quantity;    this.shipDate = shipDate;    this.status = status;    this.complete = complete;
+    
+    this.id = id;
+    this.petId = petId;
+    this.quantity = quantity;
+    this.shipDate = shipDate;
+    this.status = status;
+    this.complete = complete;
   }
 
+  
     
   @JsonProperty("id")
   public Long getId() {
@@ -56,6 +63,7 @@ public class Order   {
     this.id = id;
   }
 
+  
     
   @JsonProperty("petId")
   public Long getPetId() {
@@ -65,6 +73,7 @@ public class Order   {
     this.petId = petId;
   }
 
+  
     
   @JsonProperty("quantity")
   public Integer getQuantity() {
@@ -74,6 +83,7 @@ public class Order   {
     this.quantity = quantity;
   }
 
+  
     
   @JsonProperty("shipDate")
   public Date getShipDate() {
@@ -83,6 +93,7 @@ public class Order   {
     this.shipDate = shipDate;
   }
 
+  
     
   @JsonProperty("status")
   public StatusEnum getStatus() {
@@ -92,6 +103,7 @@ public class Order   {
     this.status = status;
   }
 
+  
     
   @JsonProperty("complete")
   public Boolean getComplete() {
@@ -101,6 +113,7 @@ public class Order   {
     this.complete = complete;
   }
 
+  
 
   @Override
   public boolean equals(Object o) {

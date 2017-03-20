@@ -23,9 +23,9 @@ public class Pet   {
 
 
   public enum StatusEnum {
-    AVAILABLE("available"),
-    PENDING("pending"),
-    SOLD("sold");
+    AVAILABLE(available),
+    PENDING(pending),
+    SOLD(sold);
 
     private String value;
 
@@ -47,9 +47,16 @@ public class Pet   {
   }
 
   public Pet (Long id, Category category, String name, List<String> photoUrls, List<Tag> tags, StatusEnum status) {
-    this.id = id;    this.category = category;    this.name = name;    this.photoUrls = photoUrls;    this.tags = tags;    this.status = status;
+    
+    this.id = id;
+    this.category = category;
+    this.name = name;
+    this.photoUrls = photoUrls;
+    this.tags = tags;
+    this.status = status;
   }
 
+  
     
   @JsonProperty("id")
   public Long getId() {
@@ -59,6 +66,7 @@ public class Pet   {
     this.id = id;
   }
 
+  
     
   @JsonProperty("category")
   public Category getCategory() {
@@ -68,6 +76,7 @@ public class Pet   {
     this.category = category;
   }
 
+  
     
   @JsonProperty("name")
   public String getName() {
@@ -77,6 +86,7 @@ public class Pet   {
     this.name = name;
   }
 
+  
     
   @JsonProperty("photoUrls")
   public List<String> getPhotoUrls() {
@@ -86,6 +96,7 @@ public class Pet   {
     this.photoUrls = photoUrls;
   }
 
+  
     
   @JsonProperty("tags")
   public List<Tag> getTags() {
@@ -95,6 +106,7 @@ public class Pet   {
     this.tags = tags;
   }
 
+  
     
   @JsonProperty("status")
   public StatusEnum getStatus() {
@@ -104,6 +116,7 @@ public class Pet   {
     this.status = status;
   }
 
+  
 
   @Override
   public boolean equals(Object o) {

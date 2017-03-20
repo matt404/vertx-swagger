@@ -1,0 +1,17 @@
+package {{rootPackage}};
+
+
+
+public class Application  {
+
+    public static void main(String args[]) {
+
+        try {
+            new MainApiVerticle().init(args);
+        } catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
+}

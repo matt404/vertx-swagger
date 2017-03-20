@@ -1,8 +1,8 @@
-package io.swagger.server.api.verticle;
+package ;
 
 import io.swagger.server.api.model.Pet;
-import io.swagger.server.api.model.ModelApiResponse;
 import java.io.File;
+import io.swagger.server.api.model.ApiResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,6 @@ public interface PetApi  {
     public void updatePetWithForm(Long petId,String name,String status);
     
     //uploadFile
-    public ModelApiResponse uploadFile(Long petId,String additionalMetadata,File file);
+    public ApiResponse uploadFile(Long petId,String additionalMetadata,File file);
     
 }

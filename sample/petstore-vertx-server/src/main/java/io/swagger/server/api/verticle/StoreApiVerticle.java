@@ -31,13 +31,19 @@ public class StoreApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(DELETEORDER_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Long orderId = Json.mapper.readValue(message.body().getJsonObject("orderId").encode(), Long.class);
+                
                 
                 
                 //TODO: call implementation
                 
+                
+                
                 service.deleteOrder(orderId);
                 message.reply(null);
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -52,9 +58,12 @@ public class StoreApiVerticle extends AbstractVerticle {
                 
                 //TODO: call implementation
                 
+                
                 Map<String, Integer> result = service.getInventory();
                 
                 message.reply(new JsonObject(Json.encode(result)).encodePrettily());
+                
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -66,14 +75,20 @@ public class StoreApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(GETORDERBYID_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Long orderId = Json.mapper.readValue(message.body().getJsonObject("orderId").encode(), Long.class);
+                
                 
                 
                 //TODO: call implementation
                 
+                
                 Order result = service.getOrderById(orderId);
                 
                 message.reply(new JsonObject(Json.encode(result)).encodePrettily());
+                
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
@@ -85,14 +100,20 @@ public class StoreApiVerticle extends AbstractVerticle {
         vertx.eventBus().<JsonObject> consumer(PLACEORDER_SERVICE_ID).handler(message -> {
             try {
                 
+                
+                
                 Order body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), Order.class);
+                
                 
                 
                 //TODO: call implementation
                 
+                
                 Order result = service.placeOrder(body);
                 
                 message.reply(new JsonObject(Json.encode(result)).encodePrettily());
+                
+                
                 
             } catch (Exception e) {
                 //TODO : replace magic number (101)
