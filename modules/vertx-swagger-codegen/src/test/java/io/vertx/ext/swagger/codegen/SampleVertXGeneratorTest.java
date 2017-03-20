@@ -14,13 +14,13 @@ public class SampleVertXGeneratorTest {
 		args[1] = "-l";
 		args[2] = "java-vertx";
 		args[3] = "-i";
-		args[4] = "http://petstore.swagger.io/v2/swagger.json";
+		args[4] = "/home/mwilson/Downloads/swagger.json";
 		args[5] = "-o";
-		args[6] = "../../../petstore-vertx-server";
+		args[6] = "../../../../EcommercePlatform/payment-api";
 		args[7] = "--group-id";
-        args[8] = "io.swagger.petstore";
+        args[8] = "com.godaddy.ecomm.payments";
         args[9] = "--artifact-id";
-        args[10] = "petstore-vertx-server";
+        args[10] = "payment-api";
 		SwaggerCodegen.main(args);
 	}
 
