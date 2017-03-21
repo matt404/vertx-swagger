@@ -27,6 +27,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
     // source folder where to write the files
 
     protected String resourceFolder = "src/main/resources";
+    protected String configFolder = "src/main/conf";
     protected String rootPackage = "com.godaddy.ecomm.payments";
     protected String apiVersion = "1.0.0-SNAPSHOT";
 
@@ -79,6 +80,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
          */
         modelPackage = rootPackage + ".model";
 
+        additionalProperties.put("apiVersion", apiVersion);
         additionalProperties.put("rootPackage", rootPackage);
 
         groupId = rootPackage;
@@ -133,9 +135,9 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
 
         supportingFiles.clear();
         supportingFiles.add(new SupportingFile("swagger.mustache", resourceFolder, "swagger.json"));
-        supportingFiles.add(new SupportingFile("config-json.mustache", resourceFolder, "config.json"));
 
-        supportingFiles.add(new SupportingFile("Application.mustache", sourceFolder + File.separator + rootPackage.replace(".", File.separator), "Application.java"));
+        supportingFiles.add(new SupportingFile("config-json.mustache", configFolder, "config.json"));
+
         supportingFiles.add(new SupportingFile("MainApiVerticle.mustache", sourceFolder + File.separator + rootPackage.replace(".", File.separator), "MainApiVerticle.java"));
 
         writeOptional(outputFolder, new SupportingFile("vertx-default-jul-logging.mustache", resourceFolder, "vertx-default-jul-logging.properties"));

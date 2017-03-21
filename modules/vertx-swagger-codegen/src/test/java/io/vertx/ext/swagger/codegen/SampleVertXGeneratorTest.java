@@ -14,9 +14,9 @@ public class SampleVertXGeneratorTest {
 		args[1] = "-l";
 		args[2] = "java-vertx";
 		args[3] = "-i";
-		args[4] = "/home/matt/Downloads/swagger.json";
+		args[4] = "/home/mwilson/Downloads/swagger.json";
 		args[5] = "-o";
-		args[6] = "../../../payment-api-sandbox";
+		args[6] = "../../../../payment-api-sandbox";
 		args[7] = "--group-id";
         args[8] = "com.godaddy.ecomm.payments";
         args[9] = "--artifact-id";
