@@ -133,6 +133,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
 
         supportingFiles.clear();
         supportingFiles.add(new SupportingFile("swagger.mustache", resourceFolder, "swagger.json"));
+        supportingFiles.add(new SupportingFile("config-json.mustache", resourceFolder, "config.json"));
 
         supportingFiles.add(new SupportingFile("Application.mustache", sourceFolder + File.separator + rootPackage.replace(".", File.separator), "Application.java"));
         supportingFiles.add(new SupportingFile("MainApiVerticle.mustache", sourceFolder + File.separator + rootPackage.replace(".", File.separator), "MainApiVerticle.java"));

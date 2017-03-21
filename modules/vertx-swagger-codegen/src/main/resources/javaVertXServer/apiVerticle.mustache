@@ -26,26 +26,16 @@ public class {{classname}}Verticle extends AbstractVerticle {
         //Consumer for {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
         vertx.eventBus().<JsonObject> consumer({{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}}).handler(message -> {
             try {
-                {{#hasParams}}{{#allParams}}{{#isListContainer}}
-                {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonArray("{{paramName}}").encode(), 
+                {{#hasParams}}{{#allParams}}{{#isListContainer}}{{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonArray("{{paramName}}").encode(),
                         Json.mapper.getTypeFactory().constructCollectionType(List.class, {{{baseType}}}.class));
-                {{/isListContainer}}
-                {{^isListContainer}}
-                {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonObject("{{paramName}}").encode(), {{{dataType}}}.class);
+                {{/isListContainer}}{{^isListContainer}}{{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonObject("{{paramName}}").encode(), {{{dataType}}}.class);
                 {{/isListContainer}}{{/allParams}}{{/hasParams}}
-                
-                //TODO: call implementation
-                
-                {{#returnType}}
-                {{{returnType}}} result = service.{{operationId}}({{#hasParams}}{{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{/hasParams}});
+                {{#returnType}}{{{returnType}}} result = service.{{operationId}}({{#hasParams}}{{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{/hasParams}});
                 {{#isListContainer}}message.reply(new JsonArray(Json.encode(result)).encodePrettily());{{/isListContainer}}
                 {{^isListContainer}}message.reply(new JsonObject(Json.encode(result)).encodePrettily());{{/isListContainer}}
-                {{/returnType}}
-                {{^returnType}}
-                service.{{operationId}}({{#hasParams}}{{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{/hasParams}});
+                {{/returnType}}{{^returnType}}service.{{operationId}}({{#hasParams}}{{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{/hasParams}});
                 message.reply(null);
                 {{/returnType}}
-                
             } catch (Exception e) {
                 //TODO : replace magic number (101)
                 message.fail(101, e.getLocalizedMessage());
