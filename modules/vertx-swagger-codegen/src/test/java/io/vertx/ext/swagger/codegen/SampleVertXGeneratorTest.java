@@ -16,11 +16,11 @@ public class SampleVertXGeneratorTest {
 		args[3] = "-i";
 		args[4] = "/home/mwilson/Downloads/swagger.json";
 		args[5] = "-o";
-		args[6] = "../../../../EcommercePlatform/payment-api";
+		args[6] = "../../../../payment-api-sandbox";
 		args[7] = "--group-id";
         args[8] = "com.godaddy.ecomm.payments";
         args[9] = "--artifact-id";
-        args[10] = "payment-api";
+        args[10] = "payment-api-sandbox";
 		SwaggerCodegen.main(args);
 	}
 

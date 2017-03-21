@@ -10,12 +10,10 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#seriali
   public {{classname}} () {
 
   }
-
-  public {{classname}} ({{#vars}}{{{datatypeWithEnum}}} {{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}) {
+  {{#hasVars}}public {{classname}} ({{#vars}}{{{datatypeWithEnum}}} {{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}) {
     {{#vars}}
     this.{{name}} = {{name}};{{/vars}}
-  }
-
+  }{{/hasVars}}
   {{#vars}}
     {{#vendorExtensions.extraAnnotation}}{{vendorExtensions.extraAnnotation}}{{/vendorExtensions.extraAnnotation}}
   @JsonProperty("{{baseName}}")
@@ -25,7 +23,6 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#seriali
   public void {{setter}}({{{datatypeWithEnum}}} {{name}}) {
     this.{{name}} = {{name}};
   }
-
   {{/vars}}
 
   @Override

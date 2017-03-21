@@ -27,14 +27,8 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
     // source folder where to write the files
 
     protected String resourceFolder = "src/main/resources";
-    protected String rootPackage = "io.swagger.server.api";
-    protected String interfacePackage, implPackage;
+    protected String rootPackage = "com.godaddy.ecomm.payments";
     protected String apiVersion = "1.0.0-SNAPSHOT";
-
-    public static final String ROOT_PACKAGE = "rootPackage";
-    public static final String VERTICLE_PACKAGE = "verticlePackage";
-
-    protected String verticlePackage = "";
 
     public JavaVertXServerGenerator() {
         super();
@@ -85,22 +79,10 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
          */
         modelPackage = rootPackage + ".model";
 
-        /**
-         * Interface Package. Optional, if needed, this can be used in templates
-         */
-        interfacePackage = rootPackage + ".interface";
+        additionalProperties.put("rootPackage", rootPackage);
 
-        /**
-         * Impl Package. Optional, if needed, this can be used in templates
-         */
-        implPackage = rootPackage + ".impl";
-
-        additionalProperties.put(ROOT_PACKAGE, rootPackage);
-        additionalProperties.put("interfacePackage", interfacePackage);
-        additionalProperties.put("implPackage", implPackage);
-
-        groupId = "io.swagger";
-        artifactId = "swagger-java-vertx-server";
+        groupId = rootPackage;
+        artifactId = "payment-api-sandbox";
         artifactVersion = apiVersion;
 
     }
@@ -157,6 +139,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
 
         writeOptional(outputFolder, new SupportingFile("vertx-default-jul-logging.mustache", resourceFolder, "vertx-default-jul-logging.properties"));
         writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
+        writeOptional(outputFolder, new SupportingFile(".gitignore.mustache", "", ".gitignore"));
         writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
     }
 
