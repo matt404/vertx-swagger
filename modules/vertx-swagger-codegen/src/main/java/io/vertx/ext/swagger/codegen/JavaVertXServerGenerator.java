@@ -36,6 +36,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
         super();
 
         sourceFolder = "src/main/java";
+        testPackage = "com.godaddy.ecomm.payments";
 
         // set the output folder here
         outputFolder = "generated-code/javaVertXServer";
@@ -66,9 +67,9 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
 
         apiTestTemplateFiles.clear();
         apiTestTemplateFiles.put("apiTest.mustache", // the template to use
-                "Test.java"); // the extension for each file to write
+                ".java"); // the extension for each file to write
         apiTestTemplateFiles.put("apiTestModule.mustache", // the template to use
-                "TestModule.java"); // the extension for each file to write
+                "Module.java"); // the extension for each file to write
 
 
         /**
@@ -82,7 +83,6 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
          * Api Package. Optional, if needed, this can be used in templates
          */
         apiPackage = rootPackage + ".verticle";
-        testPackage
 
         /**
          * Model Package. Optional, if needed, this can be used in templates
