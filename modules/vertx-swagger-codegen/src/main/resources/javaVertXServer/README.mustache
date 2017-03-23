@@ -1,15 +1,15 @@
 Project generated on : {{generatedDate}}
 
-#### Debugging this project:
+## Running this project:
 
-## From IntelliJ
+#### Debugging with IntelliJ
 1. Select the configuration dropdown from the toolbar and choose 'Edit Configurations'
 2. Click the add button (green plus sign) and select 'Application'
 3. Enter `io.vertx.core.Launcher` in the 'Main Class' field
 4. Enter `run {{rootPackage}}.MainApiVerticle -conf src/main/conf/config.json` into the 'Program Arguments' field
-5. Click 'Save', now you are all set to run debug mode via the IntelliJ toolbar.
+5. Click 'Save' and you are all set to run debug mode via the IntelliJ toolbar.
 
-## From the command line:
+#### Running from the command line:
 1. Open a terminal in the root directory of this project
 1. Create the Jar file with Maven:  'mvn clean package'
 2. Run the application:  `java -jar target/{{artifactId}}-{{apiVersion}}.jar -conf src/main/conf/config.json`

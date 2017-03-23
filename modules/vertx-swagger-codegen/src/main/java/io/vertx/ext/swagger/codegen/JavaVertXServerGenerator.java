@@ -31,6 +31,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
     protected String rootPackage = "com.godaddy.ecomm.payments";
     protected String apiVersion = "1.0.0-SNAPSHOT";
 
+
     public JavaVertXServerGenerator() {
         super();
 
@@ -63,6 +64,13 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
         apiTemplateFiles.put("apiVerticle.mustache", // the template to use
                 "Verticle.java"); // the extension for each file to write
 
+        apiTestTemplateFiles.clear();
+        apiTestTemplateFiles.put("apiTest.mustache", // the template to use
+                "Test.java"); // the extension for each file to write
+        apiTestTemplateFiles.put("apiTestModule.mustache", // the template to use
+                "TestModule.java"); // the extension for each file to write
+
+
         /**
          * Template Location. This is the location which templates will be read
          * from. The generator will use the resource stream to attempt to read
@@ -74,6 +82,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
          * Api Package. Optional, if needed, this can be used in templates
          */
         apiPackage = rootPackage + ".verticle";
+        testPackage
 
         /**
          * Model Package. Optional, if needed, this can be used in templates
@@ -123,7 +132,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
     public void processOpts() {
         super.processOpts();
 
-        apiTestTemplateFiles.clear();
+        //apiTestTemplateFiles.clear();
 
         importMapping.remove("ApiModelProperty");
         importMapping.remove("ApiModel");
@@ -144,6 +153,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
         writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
         writeOptional(outputFolder, new SupportingFile(".gitignore.mustache", "", ".gitignore"));
         writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
+        writeOptional(outputFolder, new SupportingFile("Dockerfile.mustache", "", "Dockerfile"));
     }
 
     @Override

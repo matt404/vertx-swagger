@@ -10,7 +10,8 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#seriali
   public {{classname}} () {
 
   }
-  {{#hasVars}}public {{classname}} ({{#vars}}{{{datatypeWithEnum}}} {{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}) {
+  {{#hasVars}}
+  public {{classname}} ({{#vars}}{{{datatypeWithEnum}}} {{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}) {
     {{#vars}}
     this.{{name}} = {{name}};{{/vars}}
   }{{/hasVars}}

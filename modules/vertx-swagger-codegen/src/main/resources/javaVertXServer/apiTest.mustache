@@ -1,0 +1,53 @@
+package {{package}};
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpClientRequest;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.Async;
+import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.unit.junit.VertxUnitRunner;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nonnull;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(VertxUnitRunner.class)
+public class MyApiTest {
+
+    private final Vertx vertx;
+    private final int port;
+
+    public {{classname}}Test() {
+        Injector injector = Guice.createInjector(new ApiTestModule());
+
+        vertx = injector.getInstance(Vertx.class);
+        MainVerticle mainVerticle = injector.getInstance(MainVerticle.class);
+        port = 8080;
+
+        DeploymentOptions options = new DeploymentOptions().setConfig(
+        new JsonObject().put("http.port", port));
+
+        CompletableFuture<Object> verticleDeployment = new CompletableFuture<>();
+        vertx.deployVerticle(mainVerticle, options, verticleDeployment::complete);
+        verticleDeployment.join();
+    }
+
+    @Test
+    public void ensureHealthCheckResponds(@Nonnull TestContext context) {
+        final Async async = context.async();
+        HttpClientRequest request = vertx.createHttpClient().get(port, "localhost", "/healthcheck",
+            response -> {
+                response.handler(body -> {
+                    context.assertTrue(body.toString().contains("PageOK"));
+                    async.complete();
+                });
+            });
+            request.end();
+        }
+    }
+}
