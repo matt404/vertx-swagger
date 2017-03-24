@@ -27,7 +27,8 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
     // source folder where to write the files
 
     protected String resourceFolder = "src/main/resources";
-    protected String configFolder = "src/main/conf";
+    protected String configFolder = "src/main/resources/config";
+    protected String testFolder = "src/test/java";
     protected String rootPackage = "com.godaddy.ecomm.payments";
     protected String apiVersion = "1.0.0-SNAPSHOT";
 
@@ -36,7 +37,6 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
         super();
 
         sourceFolder = "src/main/java";
-        testPackage = "com.godaddy.ecomm.payments";
 
         // set the output folder here
         outputFolder = "generated-code/javaVertXServer";
@@ -83,6 +83,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
          * Api Package. Optional, if needed, this can be used in templates
          */
         apiPackage = rootPackage + ".verticle";
+        testPackage = rootPackage + ".verticle";
 
         /**
          * Model Package. Optional, if needed, this can be used in templates
@@ -91,6 +92,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
 
         additionalProperties.put("apiVersion", apiVersion);
         additionalProperties.put("rootPackage", rootPackage);
+        additionalProperties.put("testPackage", testPackage);
 
         groupId = rootPackage;
         artifactId = "payment-api-sandbox";
@@ -126,6 +128,11 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
      */
     public String getHelp() {
         return "Generates a java-Vert.X Server application.";
+    }
+
+    @Override
+    public String apiTestFileFolder() {
+        return outputFolder + "/" + testFolder + "/" + testPackage().replace('.', '/');
     }
 
     @Override

@@ -1,4 +1,4 @@
-package {{package}};
+package {{testPackage}};
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -17,23 +17,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public class MyApiTest {
+public class {{classname}}Test {
 
     private final Vertx vertx;
     private final int port;
 
     public {{classname}}Test() {
-        Injector injector = Guice.createInjector(new ApiTestModule());
+        Injector injector = Guice.createInjector(new {{classname}}TestModule());
 
         vertx = injector.getInstance(Vertx.class);
-        MainVerticle mainVerticle = injector.getInstance(MainVerticle.class);
+        {{classname}}Verticle verticle = injector.getInstance({{classname}}Verticle.class);
         port = 8080;
 
         DeploymentOptions options = new DeploymentOptions().setConfig(
         new JsonObject().put("http.port", port));
 
         CompletableFuture<Object> verticleDeployment = new CompletableFuture<>();
-        vertx.deployVerticle(mainVerticle, options, verticleDeployment::complete);
+        vertx.deployVerticle(verticle, options, verticleDeployment::complete);
         verticleDeployment.join();
     }
 
@@ -46,8 +46,8 @@ public class MyApiTest {
                     context.assertTrue(body.toString().contains("PageOK"));
                     async.complete();
                 });
-            });
-            request.end();
-        }
+        });
+        request.end();
     }
+
 }
