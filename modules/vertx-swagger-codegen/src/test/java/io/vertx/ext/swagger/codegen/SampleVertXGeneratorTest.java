@@ -14,13 +14,13 @@ public class SampleVertXGeneratorTest {
 		args[1] = "-l";
 		args[2] = "java-vertx";
 		args[3] = "-i";
-		args[4] = "/home/mwilson/Downloads/swagger.json";
+		args[4] = "/home/ubu/Documents/workspace/cloud.mgr/specs/user.yaml";
 		args[5] = "-o";
-		args[6] = "../../../../payment-api-sandbox";
+		args[6] = "/home/ubu/Documents/workspace/cloud.mgr/user/";
 		args[7] = "--group-id";
-        args[8] = "com.godaddy.ecomm.payments";
+        args[8] = "cloud.mgr.api";
         args[9] = "--artifact-id";
-        args[10] = "payment-api-sandbox";
+        args[10] = "user";
 		SwaggerCodegen.main(args);
 	}
 

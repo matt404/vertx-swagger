@@ -29,7 +29,7 @@ public class JavaVertXServerGenerator extends JavaClientCodegen implements Codeg
     protected String resourceFolder = "src/main/resources";
     protected String configFolder = "src/main/resources/config";
     protected String testFolder = "src/test/java";
-    protected String rootPackage = "com.godaddy.ecomm.payments";
+    protected String rootPackage = "cloud.mgr.api";
     protected String apiVersion = "1.0.0-SNAPSHOT";
 
 

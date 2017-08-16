@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public class {{classname}}Impl implements {{classname}} {
+
+    private final Vertx vertx;
+
+    {{classname}}Impl(final Vertx vertx){
+        this.vertx = vertx;
+    }
+
 {{#operations}}
 {{#operation}}
     //{{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
