@@ -1,21 +1,26 @@
 package ;
 
+import io.swagger.server.api.MainApiException;
 import io.swagger.server.api.model.Order;
+
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.ext.auth.User;
 
 import java.util.List;
 import java.util.Map;
 
 public interface StoreApi  {
     //deleteOrder
-    public void deleteOrder(Long orderId);
+    void deleteOrder(Long orderId, Handler<AsyncResult<Void>> handler);
     
     //getInventory
-    public Map<String, Integer> getInventory();
+    void getInventory(User user, Handler<AsyncResult<Map<String, Integer>>> handler);
     
     //getOrderById
-    public Order getOrderById(Long orderId);
+    void getOrderById(Long orderId, Handler<AsyncResult<Order>> handler);
     
     //placeOrder
-    public Order placeOrder(Order body);
+    void placeOrder(Order body, Handler<AsyncResult<Order>> handler);
     
 }

@@ -4,9 +4,9 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-
-
+/**
+ * some description
+ **/
 @JsonInclude(JsonInclude.Include.NON_NULL) 
 public class Category   {
   
@@ -18,32 +18,30 @@ public class Category   {
   }
 
   public Category (Long id, String name) {
-    
     this.id = id;
     this.name = name;
   }
 
-  
     
   @JsonProperty("id")
   public Long getId() {
     return id;
   }
-  public void setId(Long id) {
+  public Category setId(Long id) {
     this.id = id;
+    return this;
   }
 
-  
     
   @JsonProperty("name")
   public String getName() {
     return name;
   }
-  public void setName(String name) {
+  public Category setName(String name) {
     this.name = name;
+    return this;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -85,4 +83,3 @@ public class Category   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

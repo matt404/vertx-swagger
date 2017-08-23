@@ -9,9 +9,6 @@ import io.swagger.server.api.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 @JsonInclude(JsonInclude.Include.NON_NULL) 
 public class Pet   {
   
@@ -23,9 +20,9 @@ public class Pet   {
 
 
   public enum StatusEnum {
-    AVAILABLE(available),
-    PENDING(pending),
-    SOLD(sold);
+    AVAILABLE("available"),
+    PENDING("pending"),
+    SOLD("sold");
 
     private String value;
 
@@ -47,7 +44,6 @@ public class Pet   {
   }
 
   public Pet (Long id, Category category, String name, List<String> photoUrls, List<Tag> tags, StatusEnum status) {
-    
     this.id = id;
     this.category = category;
     this.name = name;
@@ -56,67 +52,66 @@ public class Pet   {
     this.status = status;
   }
 
-  
     
   @JsonProperty("id")
   public Long getId() {
     return id;
   }
-  public void setId(Long id) {
+  public Pet setId(Long id) {
     this.id = id;
+    return this;
   }
 
-  
     
   @JsonProperty("category")
   public Category getCategory() {
     return category;
   }
-  public void setCategory(Category category) {
+  public Pet setCategory(Category category) {
     this.category = category;
+    return this;
   }
 
-  
     
   @JsonProperty("name")
   public String getName() {
     return name;
   }
-  public void setName(String name) {
+  public Pet setName(String name) {
     this.name = name;
+    return this;
   }
 
-  
     
   @JsonProperty("photoUrls")
   public List<String> getPhotoUrls() {
     return photoUrls;
   }
-  public void setPhotoUrls(List<String> photoUrls) {
+  public Pet setPhotoUrls(List<String> photoUrls) {
     this.photoUrls = photoUrls;
+    return this;
   }
 
-  
     
   @JsonProperty("tags")
   public List<Tag> getTags() {
     return tags;
   }
-  public void setTags(List<Tag> tags) {
+  public Pet setTags(List<Tag> tags) {
     this.tags = tags;
+    return this;
   }
 
-  
     
   @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
   }
-  public void setStatus(StatusEnum status) {
+  public Pet setStatus(StatusEnum status) {
     this.status = status;
+    return this;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -166,4 +161,3 @@ public class Pet   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

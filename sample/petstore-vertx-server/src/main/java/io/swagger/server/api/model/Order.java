@@ -4,10 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.Date;
-
-
-
+import java.time.OffsetDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) 
 public class Order   {
@@ -15,13 +12,13 @@ public class Order   {
   private Long id = null;
   private Long petId = null;
   private Integer quantity = null;
-  private Date shipDate = null;
+  private OffsetDateTime shipDate = null;
 
 
   public enum StatusEnum {
-    PLACED(placed),
-    APPROVED(approved),
-    DELIVERED(delivered);
+    PLACED("placed"),
+    APPROVED("approved"),
+    DELIVERED("delivered");
 
     private String value;
 
@@ -43,8 +40,7 @@ public class Order   {
 
   }
 
-  public Order (Long id, Long petId, Integer quantity, Date shipDate, StatusEnum status, Boolean complete) {
-    
+  public Order (Long id, Long petId, Integer quantity, OffsetDateTime shipDate, StatusEnum status, Boolean complete) {
     this.id = id;
     this.petId = petId;
     this.quantity = quantity;
@@ -53,67 +49,66 @@ public class Order   {
     this.complete = complete;
   }
 
-  
     
   @JsonProperty("id")
   public Long getId() {
     return id;
   }
-  public void setId(Long id) {
+  public Order setId(Long id) {
     this.id = id;
+    return this;
   }
 
-  
     
   @JsonProperty("petId")
   public Long getPetId() {
     return petId;
   }
-  public void setPetId(Long petId) {
+  public Order setPetId(Long petId) {
     this.petId = petId;
+    return this;
   }
 
-  
     
   @JsonProperty("quantity")
   public Integer getQuantity() {
     return quantity;
   }
-  public void setQuantity(Integer quantity) {
+  public Order setQuantity(Integer quantity) {
     this.quantity = quantity;
+    return this;
   }
 
-  
     
   @JsonProperty("shipDate")
-  public Date getShipDate() {
+  public OffsetDateTime getShipDate() {
     return shipDate;
   }
-  public void setShipDate(Date shipDate) {
+  public Order setShipDate(OffsetDateTime shipDate) {
     this.shipDate = shipDate;
+    return this;
   }
 
-  
     
   @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
   }
-  public void setStatus(StatusEnum status) {
+  public Order setStatus(StatusEnum status) {
     this.status = status;
+    return this;
   }
 
-  
     
   @JsonProperty("complete")
   public Boolean getComplete() {
     return complete;
   }
-  public void setComplete(Boolean complete) {
+  public Order setComplete(Boolean complete) {
     this.complete = complete;
+    return this;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -163,4 +158,3 @@ public class Order   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

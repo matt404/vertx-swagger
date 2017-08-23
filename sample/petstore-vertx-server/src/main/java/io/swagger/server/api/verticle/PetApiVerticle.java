@@ -1,15 +1,20 @@
 package io.swagger.server.api.verticle;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.ext.auth.User;
+import com.github.phiz71.vertx.swagger.router.SwaggerRouter;
 
-import io.swagger.server.api.model.Pet;
 import java.io.File;
-import io.swagger.server.api.model.ApiResponse;
+import io.swagger.server.api.MainApiException;
+import io.swagger.server.api.model.ModelApiResponse;
+import io.swagger.server.api.model.Pet;
 
 import java.util.List;
 import java.util.Map;
@@ -26,9 +31,8 @@ public class PetApiVerticle extends AbstractVerticle {
     final static String UPDATEPETWITHFORM_SERVICE_ID = "updatePetWithForm";
     final static String UPLOADFILE_SERVICE_ID = "uploadFile";
     
-    
-    //TODO : create Implementation
-    PetApi service = new PetApiImpl();
+
+    protected PetApi service = createServiceImplementation();
 
     @Override
     public void start() throws Exception {
@@ -36,225 +40,172 @@ public class PetApiVerticle extends AbstractVerticle {
         //Consumer for addPet
         vertx.eventBus().<JsonObject> consumer(ADDPET_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
                 Pet body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), Pet.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.addPet(body);
-                message.reply(null);
-                
-                
+                service.addPet(body, user, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, ADDPET_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, ADDPET_SERVICE_ID);
             }
         });
         
         //Consumer for deletePet
         vertx.eventBus().<JsonObject> consumer(DELETEPET_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
-                
-                
-                
-                
-                String apiKey = Json.mapper.readValue(message.body().getJsonObject("apiKey").encode(), String.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.deletePet(petId, apiKey);
-                message.reply(null);
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                Long petId = Json.mapper.readValue(message.body().getString("petId"), Long.class);
+                String apiKey = message.body().getString("api_key");
+                service.deletePet(petId, apiKey, user, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, DELETEPET_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, DELETEPET_SERVICE_ID);
             }
         });
         
         //Consumer for findPetsByStatus
         vertx.eventBus().<JsonObject> consumer(FINDPETSBYSTATUS_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                List<String> status = Json.mapper.readValue(message.body().getJsonArray("status").encode(), 
-                        Json.mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-                
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                List<Pet> result = service.findPetsByStatus(status);
-                message.reply(new JsonArray(Json.encode(result)).encodePrettily());
-                
-                
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                List<String> status = Json.mapper.readValue(message.body().getJsonArray("status").encode(), new TypeReference<List<String>>(){});
+                service.findPetsByStatus(status, user, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonArray(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, FINDPETSBYSTATUS_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, FINDPETSBYSTATUS_SERVICE_ID);
             }
         });
         
         //Consumer for findPetsByTags
         vertx.eventBus().<JsonObject> consumer(FINDPETSBYTAGS_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                List<String> tags = Json.mapper.readValue(message.body().getJsonArray("tags").encode(), 
-                        Json.mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-                
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                List<Pet> result = service.findPetsByTags(tags);
-                message.reply(new JsonArray(Json.encode(result)).encodePrettily());
-                
-                
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                List<String> tags = Json.mapper.readValue(message.body().getJsonArray("tags").encode(), new TypeReference<List<String>>(){});
+                service.findPetsByTags(tags, user, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonArray(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, FINDPETSBYTAGS_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, FINDPETSBYTAGS_SERVICE_ID);
             }
         });
         
         //Consumer for getPetById
         vertx.eventBus().<JsonObject> consumer(GETPETBYID_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                Pet result = service.getPetById(petId);
-                
-                message.reply(new JsonObject(Json.encode(result)).encodePrettily());
-                
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                Long petId = Json.mapper.readValue(message.body().getString("petId"), Long.class);
+                service.getPetById(petId, user, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonObject(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, GETPETBYID_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, GETPETBYID_SERVICE_ID);
             }
         });
         
         //Consumer for updatePet
         vertx.eventBus().<JsonObject> consumer(UPDATEPET_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
                 Pet body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), Pet.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.updatePet(body);
-                message.reply(null);
-                
-                
+                service.updatePet(body, user, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, UPDATEPET_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, UPDATEPET_SERVICE_ID);
             }
         });
         
         //Consumer for updatePetWithForm
         vertx.eventBus().<JsonObject> consumer(UPDATEPETWITHFORM_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
-                
-                
-                
-                
-                String name = Json.mapper.readValue(message.body().getJsonObject("name").encode(), String.class);
-                
-                
-                
-                
-                String status = Json.mapper.readValue(message.body().getJsonObject("status").encode(), String.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.updatePetWithForm(petId, name, status);
-                message.reply(null);
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                Long petId = Json.mapper.readValue(message.body().getString("petId"), Long.class);
+                String name = message.body().getString("name");
+                String status = message.body().getString("status");
+                service.updatePetWithForm(petId, name, status, user, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, UPDATEPETWITHFORM_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, UPDATEPETWITHFORM_SERVICE_ID);
             }
         });
         
         //Consumer for uploadFile
         vertx.eventBus().<JsonObject> consumer(UPLOADFILE_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                Long petId = Json.mapper.readValue(message.body().getJsonObject("petId").encode(), Long.class);
-                
-                
-                
-                
-                String additionalMetadata = Json.mapper.readValue(message.body().getJsonObject("additionalMetadata").encode(), String.class);
-                
-                
-                
-                
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                Long petId = Json.mapper.readValue(message.body().getString("petId"), Long.class);
+                String additionalMetadata = message.body().getString("additionalMetadata");
                 File file = Json.mapper.readValue(message.body().getJsonObject("file").encode(), File.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                ApiResponse result = service.uploadFile(petId, additionalMetadata, file);
-                
-                message.reply(new JsonObject(Json.encode(result)).encodePrettily());
-                
-                
-                
+                service.uploadFile(petId, additionalMetadata, file, user, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonObject(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, UPLOADFILE_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, UPLOADFILE_SERVICE_ID);
             }
         });
         
+    }
+    
+    private void manageError(Message<JsonObject> message, Throwable cause, String serviceName) {
+        int code = MainApiException.INTERNAL_SERVER_ERROR.getStatusCode();
+        String statusMessage = MainApiException.INTERNAL_SERVER_ERROR.getStatusMessage();
+        if (cause instanceof MainApiException) {
+            code = ((MainApiException)cause).getStatusCode();
+            statusMessage = ((MainApiException)cause).getStatusMessage();
+        } else {
+            logUnexpectedError(serviceName, cause); 
+        }
+            
+        message.fail(code, statusMessage);
+    }
+    
+    private void logUnexpectedError(String serviceName, Throwable cause) {
+        LOGGER.error("Unexpected error in "+ serviceName, cause);
+    }
+
+    protected PetApi createServiceImplementation() {
+        return new PetApiImpl();
     }
 }

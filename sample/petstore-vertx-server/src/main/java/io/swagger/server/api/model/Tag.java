@@ -4,9 +4,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-
-
 @JsonInclude(JsonInclude.Include.NON_NULL) 
 public class Tag   {
   
@@ -18,32 +15,30 @@ public class Tag   {
   }
 
   public Tag (Long id, String name) {
-    
     this.id = id;
     this.name = name;
   }
 
-  
     
   @JsonProperty("id")
   public Long getId() {
     return id;
   }
-  public void setId(Long id) {
+  public Tag setId(Long id) {
     this.id = id;
+    return this;
   }
 
-  
     
   @JsonProperty("name")
   public String getName() {
     return name;
   }
-  public void setName(String name) {
+  public Tag setName(String name) {
     this.name = name;
+    return this;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -85,4 +80,3 @@ public class Tag   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

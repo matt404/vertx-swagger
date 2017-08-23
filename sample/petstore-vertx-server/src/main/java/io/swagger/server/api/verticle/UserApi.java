@@ -1,33 +1,43 @@
 package ;
 
-import io.swagger.server.api.model.User;
+import io.swagger.server.api.model.InlineResponseDefault;
+import io.swagger.server.api.MainApiException;
+import io.swagger.server.api.model.ModelUser;
+import java.util.UUID;
+
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.ext.auth.User;
 
 import java.util.List;
 import java.util.Map;
 
 public interface UserApi  {
     //createUser
-    public void createUser(User body);
+    void createUser(ModelUser body, Handler<AsyncResult<Void>> handler);
     
     //createUsersWithArrayInput
-    public void createUsersWithArrayInput(List<User> body);
+    void createUsersWithArrayInput(List<ModelUser> body, Handler<AsyncResult<Void>> handler);
     
     //createUsersWithListInput
-    public void createUsersWithListInput(List<User> body);
+    void createUsersWithListInput(List<ModelUser> body, Handler<AsyncResult<Void>> handler);
     
     //deleteUser
-    public void deleteUser(String username);
+    void deleteUser(String username, Handler<AsyncResult<Void>> handler);
     
     //getUserByName
-    public User getUserByName(String username);
+    void getUserByName(String username, Handler<AsyncResult<ModelUser>> handler);
     
     //loginUser
-    public String loginUser(String username,String password);
+    void loginUser(String username, String password, Handler<AsyncResult<String>> handler);
     
     //logoutUser
-    public void logoutUser();
+    void logoutUser(Handler<AsyncResult<Void>> handler);
     
     //updateUser
-    public void updateUser(String username,User body);
+    void updateUser(String username, ModelUser body, Handler<AsyncResult<Void>> handler);
+    
+    //uuid
+    void uuid(UUID uuidParam, Handler<AsyncResult<InlineResponseDefault>> handler);
     
 }

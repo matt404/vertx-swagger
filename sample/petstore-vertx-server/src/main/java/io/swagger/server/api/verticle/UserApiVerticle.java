@@ -1,13 +1,20 @@
 package io.swagger.server.api.verticle;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.ext.auth.User;
+import com.github.phiz71.vertx.swagger.router.SwaggerRouter;
 
-import io.swagger.server.api.model.User;
+import io.swagger.server.api.model.InlineResponseDefault;
+import io.swagger.server.api.MainApiException;
+import io.swagger.server.api.model.ModelUser;
+import java.util.UUID;
 
 import java.util.List;
 import java.util.Map;
@@ -23,10 +30,10 @@ public class UserApiVerticle extends AbstractVerticle {
     final static String LOGINUSER_SERVICE_ID = "loginUser";
     final static String LOGOUTUSER_SERVICE_ID = "logoutUser";
     final static String UPDATEUSER_SERVICE_ID = "updateUser";
+    final static String UUID_SERVICE_ID = "uuid";
     
-    
-    //TODO : create Implementation
-    UserApi service = new UserApiImpl();
+
+    protected UserApi service = createServiceImplementation();
 
     @Override
     public void start() throws Exception {
@@ -34,203 +41,177 @@ public class UserApiVerticle extends AbstractVerticle {
         //Consumer for createUser
         vertx.eventBus().<JsonObject> consumer(CREATEUSER_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                User body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), User.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.createUser(body);
-                message.reply(null);
-                
-                
+                ModelUser body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), ModelUser.class);
+                service.createUser(body, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, CREATEUSER_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, CREATEUSER_SERVICE_ID);
             }
         });
         
         //Consumer for createUsersWithArrayInput
         vertx.eventBus().<JsonObject> consumer(CREATEUSERSWITHARRAYINPUT_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                List<User> body = Json.mapper.readValue(message.body().getJsonArray("body").encode(), 
-                        Json.mapper.getTypeFactory().constructCollectionType(List.class, User.class));
-                
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.createUsersWithArrayInput(body);
-                message.reply(null);
-                
-                
+                List<ModelUser> body = Json.mapper.readValue(message.body().getJsonArray("body").encode(), new TypeReference<List<ModelUser>>(){});
+                service.createUsersWithArrayInput(body, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, CREATEUSERSWITHARRAYINPUT_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, CREATEUSERSWITHARRAYINPUT_SERVICE_ID);
             }
         });
         
         //Consumer for createUsersWithListInput
         vertx.eventBus().<JsonObject> consumer(CREATEUSERSWITHLISTINPUT_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                List<User> body = Json.mapper.readValue(message.body().getJsonArray("body").encode(), 
-                        Json.mapper.getTypeFactory().constructCollectionType(List.class, User.class));
-                
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.createUsersWithListInput(body);
-                message.reply(null);
-                
-                
+                List<ModelUser> body = Json.mapper.readValue(message.body().getJsonArray("body").encode(), new TypeReference<List<ModelUser>>(){});
+                service.createUsersWithListInput(body, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, CREATEUSERSWITHLISTINPUT_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, CREATEUSERSWITHLISTINPUT_SERVICE_ID);
             }
         });
         
         //Consumer for deleteUser
         vertx.eventBus().<JsonObject> consumer(DELETEUSER_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                String username = Json.mapper.readValue(message.body().getJsonObject("username").encode(), String.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.deleteUser(username);
-                message.reply(null);
-                
-                
+                String username = message.body().getString("username");
+                service.deleteUser(username, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, DELETEUSER_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, DELETEUSER_SERVICE_ID);
             }
         });
         
         //Consumer for getUserByName
         vertx.eventBus().<JsonObject> consumer(GETUSERBYNAME_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                String username = Json.mapper.readValue(message.body().getJsonObject("username").encode(), String.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                User result = service.getUserByName(username);
-                
-                message.reply(new JsonObject(Json.encode(result)).encodePrettily());
-                
-                
-                
+                String username = message.body().getString("username");
+                service.getUserByName(username, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonObject(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, GETUSERBYNAME_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, GETUSERBYNAME_SERVICE_ID);
             }
         });
         
         //Consumer for loginUser
         vertx.eventBus().<JsonObject> consumer(LOGINUSER_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                String username = Json.mapper.readValue(message.body().getJsonObject("username").encode(), String.class);
-                
-                
-                
-                
-                String password = Json.mapper.readValue(message.body().getJsonObject("password").encode(), String.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                String result = service.loginUser(username, password);
-                
-                message.reply(new JsonObject(Json.encode(result)).encodePrettily());
-                
-                
-                
+                String username = message.body().getString("username");
+                String password = message.body().getString("password");
+                service.loginUser(username, password, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonObject(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, LOGINUSER_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, LOGINUSER_SERVICE_ID);
             }
         });
         
         //Consumer for logoutUser
         vertx.eventBus().<JsonObject> consumer(LOGOUTUSER_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.logoutUser();
-                message.reply(null);
-                
-                
+                service.logoutUser(result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, LOGOUTUSER_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, LOGOUTUSER_SERVICE_ID);
             }
         });
         
         //Consumer for updateUser
         vertx.eventBus().<JsonObject> consumer(UPDATEUSER_SERVICE_ID).handler(message -> {
             try {
-                
-                
-                
-                String username = Json.mapper.readValue(message.body().getJsonObject("username").encode(), String.class);
-                
-                
-                
-                
-                User body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), User.class);
-                
-                
-                
-                //TODO: call implementation
-                
-                
-                
-                service.updateUser(username, body);
-                message.reply(null);
-                
-                
+                String username = message.body().getString("username");
+                ModelUser body = Json.mapper.readValue(message.body().getJsonObject("body").encode(), ModelUser.class);
+                service.updateUser(username, body, result -> {
+                    if (result.succeeded())
+                        message.reply(null);
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, UPDATEUSER_SERVICE_ID);
+                    }
+                });
             } catch (Exception e) {
-                //TODO : replace magic number (101)
-                message.fail(101, e.getLocalizedMessage());
+                manageError(message, e, UPDATEUSER_SERVICE_ID);
             }
         });
         
+        //Consumer for uuid
+        vertx.eventBus().<JsonObject> consumer(UUID_SERVICE_ID).handler(message -> {
+            try {
+                UUID uuidParam = UUID.fromString(message.body().getString("uuidParam"));
+                service.uuid(uuidParam, result -> {
+                    if (result.succeeded())
+                        message.reply(new JsonObject(Json.encode(result.result())).encodePrettily());
+                    else {
+                        Throwable cause = result.cause();
+                        manageError(message, cause, UUID_SERVICE_ID);
+                    }
+                });
+            } catch (Exception e) {
+                manageError(message, e, UUID_SERVICE_ID);
+            }
+        });
+        
+    }
+    
+    private void manageError(Message<JsonObject> message, Throwable cause, String serviceName) {
+        int code = MainApiException.INTERNAL_SERVER_ERROR.getStatusCode();
+        String statusMessage = MainApiException.INTERNAL_SERVER_ERROR.getStatusMessage();
+        if (cause instanceof MainApiException) {
+            code = ((MainApiException)cause).getStatusCode();
+            statusMessage = ((MainApiException)cause).getStatusMessage();
+        } else {
+            logUnexpectedError(serviceName, cause); 
+        }
+            
+        message.fail(code, statusMessage);
+    }
+    
+    private void logUnexpectedError(String serviceName, Throwable cause) {
+        LOGGER.error("Unexpected error in "+ serviceName, cause);
+    }
+
+    protected UserApi createServiceImplementation() {
+        return new UserApiImpl();
     }
 }
